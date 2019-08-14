@@ -13,6 +13,8 @@ RUN apt-get update && apt-get install -y \
     python \
     python-docutils \
     python-pip \
+    python3 \
+    python3-pip \
     ssh \
     wkhtmltopdf \
     xvfb \
@@ -26,5 +28,9 @@ RUN pip install \
     PyYAML \
     termcolor
 
+RUN pip3 install
+    jinja2 \
+    PyYAML
+
 RUN mv $(which wkhtmltopdf) $(which wkhtmltopdf).real
-COPY lib/wkhtmltopdf /usr/local/bin/wkhtmltopdf
+COPY lib/wkhtmltopdf /usr/local/bin/wkhtmltopdfpi

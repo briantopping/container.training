@@ -1,12 +1,7 @@
 ## Intros
 
-- This slide should be customized by the tutorial instructor(s).
 
-- Hello! We are:
-
-   - .emoji[👩🏻‍🏫] Ann O'Nymous ([@...](https://twitter.com/...), Megacorp Inc)
-
-   - .emoji[👨🏾‍🎓] Stu Dent ([@...](https://twitter.com/...), University of Wakanda)
+- Hello! I'm [Brian Topping](https://linkedin.com/in/briantopping)
 
  <!-- .dummy[
 
@@ -22,14 +17,11 @@
 
 ] -->
 
-- The workshop will run from ...
+- Welcome to the New Relic Kubernetes training by Ardan Labs on Aug 20-22, 2019!
 
-- There will be a lunch break at ...
+- Format is a general lecture and example labs with lunch, morning and afternoon breaks.
 
-  (And coffee breaks!)
+- Full screen container pictures indicate a good time for breaks.
 
-- Feel free to interrupt for questions at any time
+- With a large class, consider your fellow classmates as you consider questions. We have a LOT of material to cover!
 
-- *Especially when you see full screen container pictures!*
-
-- Live feedback, questions, help: @@CHAT@@

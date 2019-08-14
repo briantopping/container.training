@@ -50,8 +50,6 @@ Misattributed to Benjamin Franklin
 
 - Go to @@SLIDES@@ to view these slides
 
-- Join the chat room: @@CHAT@@
-
 <!-- ```open @@SLIDES@@``` -->
 
 ]
@@ -128,7 +126,7 @@ class: in-person
 
 ---
 
-class: in-person, extra-details
+class: self-paced, extra-details
 
 ## What is this Mosh thing?
 
@@ -154,7 +152,7 @@ We're just telling you about it because some of us think it's cool!*
 
 ---
 
-class: in-person, extra-details
+class: self-paced, extra-details
 
 ## Using Mosh
 

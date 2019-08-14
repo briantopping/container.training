@@ -5,11 +5,11 @@ export AWS_INSTANCE_TYPE=t3a.small
 
 INFRA=infra/aws-us-west-2
 
-STUDENTS=2
+STUDENTS=1
 
 PREFIX=$(date +%Y-%m-%d-%H-%M)
 
-SETTINGS=admin-dmuc
+SETTINGS=jerome
 TAG=$PREFIX-$SETTINGS
 ./workshopctl start \
 	--tag $TAG \
@@ -28,7 +28,7 @@ TAG=$PREFIX-$SETTINGS
 	--tag $TAG \
 	--infra $INFRA \
 	--settings settings/$SETTINGS.yaml \
-	--count $((3*$STUDENTS))
+	--count $((4*$STUDENTS))
 
 ./workshopctl disableaddrchecks $TAG
 ./workshopctl deploy $TAG
@@ -41,7 +41,7 @@ TAG=$PREFIX-$SETTINGS
 	--tag $TAG \
 	--infra $INFRA \
 	--settings settings/$SETTINGS.yaml \
-	--count $((3*$STUDENTS))
+	--count $((4*$STUDENTS))
 
 ./workshopctl disableaddrchecks $TAG
 ./workshopctl deploy $TAG
@@ -58,7 +58,7 @@ TAG=$PREFIX-$SETTINGS
 	--tag $TAG \
 	--infra $INFRA \
 	--settings settings/$SETTINGS.yaml \
-	--count $((3*$STUDENTS))
+	--count $((4*$STUDENTS))
 
 ./workshopctl deploy $TAG
 ./workshopctl kube $TAG 1.13.5

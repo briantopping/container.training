@@ -37,18 +37,17 @@ If anything goes wrong — ask for help!
 - Use something like
   [Play-With-Docker](http://play-with-docker.com/) or
   [Play-With-Kubernetes](https://training.play-with-kubernetes.com/)
-
-  Zero setup effort; but environment are short-lived and
+  
+  - Zero setup effort; but environment are short-lived and
   might have limited resources
 
-- Create your own cluster (local or cloud VMs)
+- Create your own cluster (local or cloud VMs) such as with [Docker Desktop](https://blog.docker.com/2018/07/kubernetes-is-now-available-in-docker-desktop-stable-channel/)
 
-  Small setup effort; small cost; flexible environments
+  - Small setup effort; small cost; flexible environments
 
-- Create a bunch of clusters for you and your friends
+- Create a bunch of clusters for you and your friends using the tools we use
     ([instructions](https://@@GITREPO@@/tree/master/prepare-vms))
-
-  Bigger setup effort; ideal for group training
+  - Bigger setup effort; ideal for group training
 
 ---
 
@@ -103,9 +102,9 @@ Once in a while, the instructions will say:
 
 There are multiple ways to do this:
 
-- create a new window or tab on your machine, and SSH into the VM;
+- create a new windows or **window tabs** on your machine, and SSH into the VM each time;
 
-- use screen or tmux on the VM and open a new window from there.
+- use `screen` or `tmux` in a single window/tab from the target VM and open additional new windows from there.
 
 You are welcome to use the method that you feel the most comfortable with.
 
@@ -113,7 +112,9 @@ You are welcome to use the method that you feel the most comfortable with.
 
 ## Tmux cheatsheet
 
-[Tmux](https://en.wikipedia.org/wiki/Tmux) is a terminal multiplexer like `screen`.
+[Tmux](https://en.wikipedia.org/wiki/Tmux) is a terminal multiplexer like `screen`. It's great if you have UNIX superpowers!
+
+Key feature: The equivalent of "window tabs" over SSH.
 
 *You don't have to use it or even know about it to follow along.
 <br/>

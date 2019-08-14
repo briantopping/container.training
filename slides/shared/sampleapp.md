@@ -37,7 +37,7 @@ Let's start this before we look around, as downloading will take a little time..
   cd ~/container.training/dockercoins
   ```
 
-- Use Compose to build and run all containers:
+- Without Kubernetes, use Docker Compose to build and run all containers:
   ```bash
   docker-compose up
   ```
@@ -88,7 +88,7 @@ and displays aggregated logs.
 
 - DockerCoins is made of 5 services:
 
-  - `rng` = web service generating random bytes
+  - `rng` = "Random Number Generator": web service generating random bytes
 
   - `hasher` = web service computing hash of POSTed data
 
@@ -126,7 +126,7 @@ class: pic
 
 ---
 
-## Service discovery in container-land
+## Service discovery between containers
 
 How does each service find out the address of the other ones?
 
@@ -139,6 +139,8 @@ How does each service find out the address of the other ones?
 - We just connect to a service name, and container-magic does the rest
 
   (And by container-magic, we mean "a crafty, dynamic, embedded DNS server")
+
+- True for both Docker Compose and Kubernetes
 
 ---
 
@@ -210,7 +212,7 @@ class: extra-details
 
 ---
 
-class: extra-details
+class: self-paced, extra-details
 
 ## Compose file format version
 

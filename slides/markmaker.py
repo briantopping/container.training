@@ -11,7 +11,7 @@ import sys
 import yaml
 
 
-logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO"))
+logging.basicConfig(level=os.environ.get("LOG_LEVEL", "DEBUG"))
 
 
 def anchor(title):

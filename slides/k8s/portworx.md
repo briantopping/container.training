@@ -166,7 +166,7 @@ If you want to generate a YAML file tailored to your own needs, the easiest
 way is to use https://install.portworx.com/.
 
 FYI, this is how we obtained the YAML file used earlier:
-```
+```bash
 KBVER=$(kubectl version -o json | jq -r .serverVersion.gitVersion)
 BLKDEV=/dev/loop4
 curl https://install.portworx.com/1.4/?kbver=$KBVER&b=true&s=$BLKDEV&c=px-workshop&stork=true&lh=true
