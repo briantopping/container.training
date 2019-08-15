@@ -37,7 +37,7 @@ template_file_path = os.path.join(
     "templates",
     template_file_name
     )
-template = jinja2.Template(open(template_file_path).read())
+template = jinja2.Template(open(template_file_path, "r", encoding="utf-8").read())
 with open("ips.html", "w") as f:
 	f.write(template.render(clusters=clusters, **SETTINGS))
 print("Generated ips.html")

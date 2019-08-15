@@ -332,6 +332,20 @@ class: extra-details
 
 ---
 
+## What have we done here?
+
+- This is a Kubernetes class. Did we just run an app in Kubernetes?
+
+--
+
+- Nope, we just brought up containers in Docker. If you're not familiar, Docker Compose is a lightweight orchestration platform that doesn't scale like Kubernetes does. 
+
+- But we **did** run our application in the simplest manner possible.
+
+- Now let's make that app work in Kubernetes!
+
+---
+
 ## Stopping the application
 
 - If we interrupt Compose (with `^C`), it will politely ask the Docker Engine to stop the app

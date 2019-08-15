@@ -23,8 +23,10 @@ chapters:
   - shared/connecting.md
   - k8s/versions-k8s.md
   - shared/sampleapp.md
+  - shared/differences.md
   - shared/composedown.md
   - k8s/concepts-k8s.md
+  - k8s/kubectloverview.md
   - k8s/kubectlget.md
 - - k8s/kubectlrun.md
   - k8s/logs-cli.md

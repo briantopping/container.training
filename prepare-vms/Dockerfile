@@ -28,9 +28,12 @@ RUN pip install \
     PyYAML \
     termcolor
 
-RUN pip3 install
+RUN pip3 install \
+    awscli \
     jinja2 \
-    PyYAML
+    pdfkit \
+    PyYAML \
+    termcolor
 
 RUN mv $(which wkhtmltopdf) $(which wkhtmltopdf).real
 COPY lib/wkhtmltopdf /usr/local/bin/wkhtmltopdfpi
