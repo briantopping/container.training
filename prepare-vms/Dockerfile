@@ -36,4 +36,4 @@ RUN pip3 install \
     termcolor
 
 RUN mv $(which wkhtmltopdf) $(which wkhtmltopdf).real
-COPY lib/wkhtmltopdf /usr/local/bin/wkhtmltopdfpi
+COPY lib/wkhtmltopdf /usr/local/bin/wkhtmltopdf

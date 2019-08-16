@@ -8,24 +8,22 @@
 
 - By default, every service accepts traffic from anyone
 
-- If we want this to be different, we need *network policies*
+- **If we want this to be different, we need *network policies!***
 
 ---
 
 ## What's a network policy?
 
-A network policy is defined by the following things.
+A `NetworkPolicy` is a resource defined by three things.
 
 - A *pod selector* indicating which pods it applies to
-
-  e.g.: "all pods in namespace `blue` with the label `zone=internal`"
+  <br/>e.g.: "all pods in namespace `blue` with the label `zone=internal`"
 
 - A list of *ingress rules* indicating which inbound traffic is allowed
-
-  e.g.: "TCP connections to ports 8000 and 8080 coming from pods with label `zone=dmz`,
+  <br/>e.g.: "TCP connections to ports 8000 and 8080 coming from pods with label `zone=dmz`,
   and from the external subnet 4.42.6.0/24, except 4.42.6.5"
 
-- A list of *egress rules* indicating which outbound traffic is allowed
+- A similar list of *egress rules* indicating which outbound traffic is allowed
 
 A network policy can provide ingress rules, egress rules, or both.
 
@@ -36,12 +34,10 @@ A network policy can provide ingress rules, egress rules, or both.
 - A pod can be "selected" by any number of network policies
 
 - If a pod isn't selected by any network policy, then its traffic is unrestricted
+  <br/>(In other words: in the absence of network policies, all traffic is allowed)
 
-  (In other words: in the absence of network policies, all traffic is allowed)
-
-- If a pod is selected by at least one network policy, then all traffic is blocked ...
-
-  ... unless it is explicitly allowed by one of these network policies
+- If a pod is selected by ***any*** network policy, then ***all*** traffic is blocked 
+  <br/>... until it is explicitly allowed by one of these network policies
 
 ---
 
@@ -52,8 +48,7 @@ class: extra-details
 - Network policies deal with *connections*, not individual packets
 
 - Example: to allow HTTP (80/tcp) connections to pod A, you only need an ingress rule
-
-  (You do not need a matching egress rule to allow response traffic to go through)
+  <br/>(You do not need a matching egress rule to allow response traffic to go through)
 
 - This also applies for UDP traffic
 
@@ -413,6 +408,18 @@ troubleshoot easily, without having to poke holes in our firewall.
 - If we block access to the control plane, we might disrupt legitimate code
 
 - ...Without necessarily improving security
+
+---
+
+## Combining with node-level kernel firewalling
+
+Your service and pod networks are only as secure as the nodes they run on:
+  - Is the network trusted? (ie are the nodes exposed to the public internet?)
+  - Can you run a VPN pod?
+  
+Another way to secure a public facing cluster is to deploy a VPN pod and firewall off everything else (except SSH?) at the kernel level. Pods can talk to each other, take advantage of that!
+
+In the end, it's a network architecture problem that is constrained by the resources available to your installation (number of physical nodea, IP address blocks, number of interfaces, TOR switches, etc..)
 
 ---
 

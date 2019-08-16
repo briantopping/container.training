@@ -334,17 +334,14 @@ class: extra-details
 
   🤔🧐🧟 Wait, what?
 
-- When a process terminates, its parent must call `wait()`/`waitpid()`
-
+- When any process terminates (including exec probes), its parent must call `wait()`/`waitpid()`
   (this is how the parent process retrieves the child's exit status)
 
-- In the meantime, the process is in *zombie* state
-
+- In the meantime, the process hangs around in the *zombie* state
   (the process state will show as `Z` in `ps`, `top` ...)
 
 - When a process is killed, its children are *orphaned* and attached to PID 1
-
-- PID 1 has the responsibility of *reaping* these processes when they terminate
+  - PID 1 has the responsibility of *reaping* these processes when they terminate
 
 - OK, but how does that affect us?
 
@@ -354,15 +351,12 @@ class: extra-details
 
 ## PID 1 in containers
 
-- On ordinary systems, PID 1 (`/sbin/init`) has logic to reap processes
+- On ordinary systems, PID 1 is `/sbin/init` and has logic to reap processes
 
-- In containers, PID 1 is typically our application process
+- In containers, PID 1 is typically our application process (e.g. Apache, the JVM, NGINX, Redis ...), oops!
 
-  (e.g. Apache, the JVM, NGINX, Redis ...)
-
-- These *do not* take care of reaping orphans
-
-- If we use exec probes, we need to add a process reaper
+  - These *do not* take care of reaping orphans
+  - If we use exec probes every fifteen seconds, we will have 14,400 zombies after 24 hours!
 
 - We can add [tini](https://github.com/krallin/tini) to our images
 
@@ -375,19 +369,15 @@ class: extra-details
 ## Healthchecks for worker
 
 - Readiness isn't useful
-
-  (because worker isn't a backend for a service)
+  <br/>(because worker isn't a backend for a service)
 
 - Liveness may help us restart a broken worker, but how can we check it?
 
 - Embedding an HTTP server is an option
-
-  (but it has a high potential for unwanted side effects and false positives)
+  <br/>(but it has a high potential for unwanted side effects and false positives)
 
 - Using a "lease" file can be relatively easy:
-
   - touch a file during each iteration of the main loop
-
   - check the timestamp of that file from an exec probe
 
 - Writing logs (and checking them from the probe) also works

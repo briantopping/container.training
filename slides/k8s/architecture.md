@@ -101,17 +101,18 @@ class: pic
 The kubelet agent uses a number of special-purpose protocols and interfaces, including:
 
 - CRI (Container Runtime Interface)
-
   - used for communication with the container engine
   - abstracts the differences between container engines
   - based on gRPC+protobuf
 
 - [CNI (Container Network Interface)](https://github.com/containernetworking/cni/blob/master/SPEC.md)
-
   - used for communication with network plugins
   - network plugins are implemented as executable programs invoked by kubelet
   - network plugins provide IPAM
   - network plugins set up network interfaces in pods
+
+- [CSI (Container Storage Interface)](https://github.com/container-storage-interface/spec/blob/master/spec.md)
+  - similar pluggable abstraction, but for persistent storage
 
 ---
 
@@ -348,36 +349,54 @@ We demonstrated *update* and *watch* semantics.
 
 ## Controller manager
 
-- This is a collection of loops watching all kinds of objects
+- This is a "controller of controllers"
+  - A controller registers itself as watching specific object types
+  
+  - When an object of one of those types is changed, the registered controller is notified by this manager
+  
+  - You'd be surprised how narrow the scope of responsibility is here. That's by design!
 
-- That's where the actual logic of Kubernetes lives
+- The actual logic of Kubernetes is in controllers registered for configuration objects. Remember this when we look at Operators!
 
-- When we create a Deployment (e.g. with `kubectl run web --image=nginx`),
+---
 
-  - we create a Deployment object
+## Controller manager processing
 
-  - the Deployment controller notices it, and creates a ReplicaSet
+When we create a Deployment (e.g. with `kubectl run web --image=nginx`),
+- `kubectl` creates a `Deployment` object by talking to the API server
 
-  - the ReplicaSet controller notices the ReplicaSet, and creates a Pod
+- the API server makes various checks and adds the object to `etcd`
+
+- the controller manager sees the database change and notifies the controller registered for that object type
+
+- the `Deployment` controller receives the notice and creates a `ReplicaSet` object via the API server
+
+- the process repeats for the `ReplicaSet`, now selecting ReplicaSet controller
+
+- this can continue for *many* layers...
 
 ---
 
 ## Scheduler
 
-- When a pod is created, it is in `Pending` state
+- When a pod is created, it is just a configuration object in `Pending` state
 
-- The scheduler (or rather: *a scheduler*) must bind it to a node
-
+- The scheduler (or rather: *a scheduler*) must reconcile that state to `Active` by binding it to a node
   - Kubernetes comes with an efficient scheduler with many features
-
   - if we have special requirements, we can add another scheduler
     <br/>
     (example: this [demo scheduler](https://github.com/kelseyhightower/scheduler) uses the cost of nodes, stored in node annotations)
+  - Using that code, we could write our own!
 
 - A pod might stay in `Pending` state for a long time:
-
   - if the cluster is full
-
   - if the pod has special constraints that can't be met
-
   - if the scheduler is not running (!)
+
+---
+
+## Let's Review!
+
+Remember our "19,000 words" slide show from day one?
+
+Let's revisit it to see if it makes more sense now!

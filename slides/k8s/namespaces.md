@@ -255,6 +255,18 @@ If the graph shows up but stays at zero, give it a minute or two!
 
 ---
 
+## Why did this work?
+
+There are two important aspects to how we were able to deploy Kubercoins to a different namespace:
+
+- We changed the default namespace
+
+- The Kubercoins YAML files *don't specify a specific namespace*
+
+When the `metadata` section of resources don't specify a namespace, they are added to the current one.
+
+---
+
 ## Namespaces and isolation
 
 - Namespaces *do not* provide isolation
