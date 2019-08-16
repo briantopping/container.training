@@ -1,20 +1,20 @@
-# Shipping images with a registry
+# Distributing images via a shared registry
 
-- Initially, our app was running on a single node
+- Initially, our `docker-compose` app was running on a single node
 
 - We could *build* and *run* in the same place
 
-- Therefore, we did not need to *ship* anything
+- Now that we want to run on a cluster, there are *many* nodes with registries to keep updated. We don't want to build on each one!
 
-- Now that we want to run on a cluster, things are different
-
-- The easiest way to ship container images is to use a registry
+- The easiest way to distribute container images is to use a registry
 
 ---
 
 ## How Docker registries work (a reminder)
 
-- What happens when we execute `docker run alpine` ?
+What happens when we execute `docker run alpine`?
+
+- If the image exists in the machine's registry, it is used
 
 - If the Engine needs to pull the `alpine` image, it expands it into `library/alpine`
 
@@ -36,39 +36,37 @@
 
 ## Running DockerCoins on Kubernetes
 
-- Create one deployment for each component
+- Create one `Deployment` configuration for each component
 
   (hasher, redis, rng, webui, worker)
 
-- Expose deployments that need to accept connections
+- Expose deployments that need to accept connections, creating `Service` configs
 
   (hasher, redis, rng, webui)
 
-- For redis, we can use the official redis image
+  - For redis, we can use the official redis image
 
-- For the 4 others, we need to build images and push them to some registry
+  - For the 4 others, we need to build images and push them to some registry
 
 ---
 
 ## Building and shipping images
 
-- There are *many* options!
+Standard developer workflows, with additional push to registries
 
-- Manually:
+- Manually on each worker node:
 
-  - build locally (with `docker build` or otherwise)
+  - build (with `docker build` or otherwise) and push to the local registry
 
-  - push to the registry
+- Automatically via Continuous Integration:
 
-- Automatically:
+  - build and test on developer machine
+  - when ready, commit and push a code repository (Git)
+  - the code repository notifies an automated build system (Jenkins)
+  - CI system gets the code, builds it, pushes the docker image to the shared registry
+  - worker nodes are configured to pull from this shared registry
 
-  - build and test locally
-
-  - when ready, commit and push a code repository
-
-  - the code repository notifies an automated build system
-
-  - that system gets the code, builds it, pushes the image to the registry
+***How does your company do things?***
 
 ---
 
@@ -82,10 +80,9 @@
 
 - There are also commercial products to run our own registry
 
-  (Docker EE, Quay...)
+  (Nexus, Artifactory, Docker EE, Quay...)
 
-- And open source options, too!
-
-- When picking a registry, pay attention to its build system
-
-  (when it has one)
+- When picking a registry, pay attention to your ecosystem needs
+  - Build system
+  - LDAP integration
+  - Testing tools (especially automated security tools)

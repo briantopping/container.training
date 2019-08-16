@@ -42,6 +42,27 @@
 
 ---
 
+## Where can we use it?
+
+- `kubectl` only needs two things to run:
+
+  - The config file / keys
+
+  - Firewall access to the control plane
+
+- Any machine that has these two things can run `kubectl`. But for the most part, one only needs it where they are typically on shell. In our case, this is `node1`.
+
+--
+
+- As we'll see later, it's easy to run it from your own laptop, etc.
+
+--
+
+- You and your team need to decide if this is a good idea or not **because the API port needs to be accessible to your laptop**.
+  - ...Works great over a VPN though!!
+
+---
+
 ## Obtaining machine-readable output
 
 - `kubectl get` can output JSON, YAML, or be directly formatted
@@ -76,6 +97,10 @@
   ```
 
 ]
+
+--
+
+- Note the key difference there with the output type of `json`. That provides a usable input format to `jq`. 
 
 ---
 
@@ -120,6 +145,9 @@ class: extra-details
 
   (they communicate with the API server and obtain the exact type definitions)
 
+--
+
+- Google is your friend. Sometimes blog entries by independent developers are better at explaining subtle concepts and accellerating learning...
 ---
 
 ## Type names
@@ -133,10 +161,6 @@ class: extra-details
   - short (e.g. `no`, `svc`, `deploy`)
 
 - Some resources do not have a short name
-
-- `Endpoints` only have a plural form
-
-  (because even a single `Endpoints` resource is actually a list of endpoints)
 
 ---
 
@@ -154,5 +178,7 @@ class: extra-details
 
   - difficult to read for a human operator
 
-- For a comprehensive overview, we can use `kubectl describe` instead
+--
+
+- Instead, we can use `kubectl describe`
 

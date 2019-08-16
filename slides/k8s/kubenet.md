@@ -1,24 +1,38 @@
-# Kubernetes network model
+# Kubernetes network model assumptions
 
-- TL,DR:
+- We have a bunch of *ephemeral* containers: *they don't last long*
 
-  *Our cluster (nodes and pods) is one big flat IP network.*
+- If a container dies, it shouldn't (quickly) reuse an address: *services might keep trying that address and fail on the replacement service.*
+
+- Containers might last only a few seconds and we might launch a lot of them over time: *we need a lot of addresses!*
+
+- We can't consume a lot of addresses without disrupting where we are deployed.
+
+**BUT**
+
+- Nodes and pods must be able to reach each other directly in this large address space and be self-aware!
+
+---
+
+## Enter [Container Network Interface](https://github.com/containernetworking/cni/blob/master/SPEC.md)
+
+  **Q:** *What if our premises are wrong?*
+--
+
+  <br/>**A: *Make the implementation pluggable!***
 
 --
 
-- In detail:
-
- - all nodes must be able to reach each other, without NAT
-
- - all pods must be able to reach each other, without NAT
-
- - pods and nodes must be able to reach each other, without NAT
-
- - each pod is aware of its IP address (no NAT)
-
- - pod IP addresses are assigned by the network implementation
-
-- Kubernetes doesn't mandate any particular implementation
+CNI is a simple interface that allows a myriad of subtle means to connect short-lived (*ephemeral!*) addresses in virtual environments between cluster nodes:
+  - Many implementations use `iptables`: *Kubernetes quickly found the folly of that path!*
+  
+  - Newer implementations started using `ipvs`: *better!*
+  
+  - [One implementation](https://cilium.io) uses [BPF](https://en.wikipedia.org/wiki/Berkeley_Packet_Filter): *wow!*
+  
+  - [Another implementation](https://github.com/intel/multus-cni) allows multiple separate CNI implementations to be loaded: *whoa...*
+ 
+***The possibilities are endless!!***
 
 ---
 
@@ -67,7 +81,7 @@
 
 - The nodes that we are using have been set up to use [Weave](https://github.com/weaveworks/weave)
 
-- We don't endorse Weave in a particular way, it just Works For Us
+- We don't endorse Weave in a particular way, it Just Works
 
 - Don't worry about the warning about `kube-proxy` performance
 
@@ -86,13 +100,11 @@
 
 class: extra-details
 
-## The Container Network Interface (CNI)
+## CNI Details
 
-- Most Kubernetes clusters use CNI "plugins" to implement networking
+- Kubernetes clusters always use a CNI plugin to implement networking, (even if that plugin delegates to other plugins or to a upstream hosting provider like AWS)
 
-- When a pod is created, Kubernetes delegates the network setup to these plugins
-
-  (it can be a single plugin, or a combination of plugins, each doing one task)
+- When a pod is created, Kubernetes gives the abstract command to the plugin
 
 - Typically, CNI plugins will:
 
@@ -114,7 +126,7 @@ class: extra-details
 
   - is generally implemented with CNI plugins
 
-- The "pod-to-service network":
+- The "service-to-pod network" or "service network":
 
   - provides internal communication and load balancing
 
@@ -138,10 +150,21 @@ class: extra-details
 
   - load balancers (ideally, connected to the pod network)
 
-- It is possible to use multiple pod networks in parallel
-
-  (with "meta-plugins" like CNI-Genie or Multus)
-
 - Some solutions can fill multiple roles
 
   (e.g. kube-router can be set up to provide the pod network and/or network policies and/or replace kube-proxy)
+
+---
+
+## So many features, how do I choose one?
+
+Answer: Don't choose your CNI, let it choose you!
+
+- You already started with Weave. Maybe stick with it?
+
+- No matter what you start with, you'll find reasons another one is better:
+  - Maybe your internal infrastructure is already using BGP (for instance)
+  - Production is seeing problems related to specific capabilities of your current CNI
+  - ???
+  
+***CNI is a deep rabbit hole. Expect to change once you know better!***

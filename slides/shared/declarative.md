@@ -1,47 +1,35 @@
 # Declarative vs imperative
 
-- Our container orchestrator puts a very strong emphasis on being *declarative*
+Kubernetes is *declarative*
 
-- Declarative:
+- **Declarative:** Please provide what I describe
 
   *I would like a cup of tea.*
 
-- Imperative:
+- **Imperative:** Please do these specific tasks in order
 
   *Boil some water. Pour it in a teapot. Add tea leaves. Steep for a while. Serve in a cup.*
 
 --
 
-- Declarative seems simpler at first ... 
-
---
-
-- ... As long as you know how to brew tea
+Both result in a cup of tea!
 
 ---
 
-## Declarative vs imperative
+# Declarative vs imperative
 
-- What declarative would really be:
-
-  *I want a cup of tea, obtained by pouring an infusion¹ of tea leaves in a cup.*
+- Declarative is "opinionated". If a declarative system "adds leaves before pouring the water", some users might have no end of problems (some of which are non-technical in nature).
 
 --
 
-  *¹An infusion is obtained by letting the object steep a few minutes in hot² water.*
+- Imperative is exhausting and potentially error prone if every user has to describe the same basic tasks as every other user.
 
 --
 
-  *²Hot liquid is obtained by pouring it in an appropriate container³ and setting it on a stove.*
-
---
-
-  *³Ah, finally, containers! Something we know about. Let's get to work, shall we?*
-
---
-
-.footnote[Did you know there was an [ISO standard](https://en.wikipedia.org/wiki/ISO_3103)
-specifying how to brew tea?]
+- Upgrading imperative *ecosystems* is difficult:
+  - If users of a system have specified where they want a cup of tea, new versions of the system might use filtered water automatically. *When would someone not want filtered water for their tea?*
+  
+  - Harder to do this if users have specified imperative rules in each deployment.
 
 ---
 
@@ -49,15 +37,15 @@ specifying how to brew tea?]
 
 - Imperative systems:
 
-  - simpler
+  - Higher user confidence because we are controlling the outcome
 
-  - if a task is interrupted, we have to restart from scratch
+  - An abstract system controller doen't know what's going on. Have to restart from scratch.
+    - *Can the system unwind the imperative side effects?*
 
 - Declarative systems:
 
-  - if a task is interrupted (or if we show up to the party half-way through),
-    we can figure out what's missing and do only what's necessary
+  - if a process is interrupted (or if we show up to the party half-way through), we can figure out what's missing and do only what's necessary
 
-  - we need to be able to *observe* the system
+  - the *controller* must track the current *state* from it's own actions
 
-  - ... and compute a "diff" between *what we have* and *what we want*
+  - ... and compute a "diff" between that *state* and desired *specification*

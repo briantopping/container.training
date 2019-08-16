@@ -1,17 +1,17 @@
 # Exposing containers
 
-- `kubectl expose` creates a *service* for existing pods
+- `kubectl expose` creates a `service` spec object for existing pods
+  - (remember, reconciliation by a controller updates the network to match the spec...)
 
-- A *service* is a stable address for a pod (or a bunch of pods)
+- The service is a stable address for a pod (or a bunch of pods). 
 
-- If we want to connect to our pod(s), we need to create a *service*
+- If we want to connect from outside our pod(s), we need to create a service
+  - Multiple containers within a pod can connect to each other without a service
 
-- Once a service is created, CoreDNS will allow us to resolve it by name
-
-  (i.e. after creating service `hello`, the name `hello` will resolve to something)
+- CoreDNS only resolves services (not pods) by name
+  (i.e. after creating service `hello`, the name `hello` will resolve to an address)
 
 - There are different types of services, detailed on the following slides:
-
   `ClusterIP`, `NodePort`, `LoadBalancer`, `ExternalName`
 
 ---
@@ -40,22 +40,21 @@ Under the hood: `kube-proxy` is using a userland proxy and a bunch of `iptables`
 
 - `LoadBalancer`
 
-  - an external load balancer is allocated for the service
-  - the load balancer is configured accordingly
-    <br/>(e.g.: a `NodePort` service is created, and the load balancer sends traffic to that port)
-  - available only when the underlying infrastructure provides some "load balancer as a service"
-    <br/>(e.g. AWS, Azure, GCE, OpenStack...)
+  - A `LoadBalancer` controller is paired with an external load balancer (ie f5, AWS, Azure, GCE, OpenStack).
+  - The controller reconciles `LoadBalancer` objects to the external load balancer.
+  - If we are running on a node with multiple IP addresses, we can also use [MetalLB](https://metallb.universe.tf).
 
 - `ExternalName`
 
   - the DNS entry managed by CoreDNS will just be a `CNAME` to a provided record
   - no port, no IP address, no nothing else is allocated
+  - typically used for so services outside of cluster are transparently addressable from inside (and without modifying the [CoreDNS configuration](https://coredns.io/manual/configuration/) directly.)
 
 ---
 
 ## Running containers with open ports
 
-- Since `ping` doesn't have anything to connect to, we'll have to run something else
+- `ping` depends on a target kernel. We don't have that so we'll have to run something else
 
 - We could use the `nginx` official image, but ...
 
@@ -63,13 +62,9 @@ Under the hood: `kube-proxy` is using a userland proxy and a bunch of `iptables`
 
 - We are going to use `jpetazzo/httpenv`, a tiny HTTP server written in Go
 
-- `jpetazzo/httpenv` listens on port 8888
-
-- It serves its environment variables in JSON format
-
-- The environment variables will include `HOSTNAME`, which will be the pod name
-
-  (and therefore, will be different on each backend)
+  - listens on port 8888
+  - serves its environment variables in JSON format
+  - environment variables will include `HOSTNAME`, which will be the pod name
 
 ---
 
@@ -169,13 +164,13 @@ Under the hood: `kube-proxy` is using a userland proxy and a bunch of `iptables`
 
 --
 
-Try it a few times! Our requests are load balanced across multiple pods.
+Try it a few times! Our requests are round-robined across multiple pods.
 
 ---
 
 class: extra-details
 
-## If we don't need a load balancer
+## If we don't need a round-robin
 
 - Sometimes, we want to access our scaled services directly:
 
@@ -203,11 +198,13 @@ class: extra-details
 
 - As a result, the service doesn't have a virtual IP address
 
-- Since there is no virtual IP address, there is no load balancer either
+- Since there is no virtual IP address, there is no service round-robin either
 
 - CoreDNS will return the pods' IP addresses as multiple `A` records
 
 - This gives us an easy way to discover all the replicas for a deployment
+
+- Also useful for addresses that are exposed via `LoadBalancer`
 
 ---
 
@@ -276,6 +273,8 @@ error: the server doesn't have a resource type "endpoint"
 - There is no `endpoint` object: `type Endpoints struct`
 
 - The type doesn't represent a single endpoint, but a list of endpoints
+
+- *Don't get too caught up on all this, the tab key will always resolve it for you!*
 
 ---
 

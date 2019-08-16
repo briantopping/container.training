@@ -22,7 +22,7 @@
 
 ---
 
-## Services
+## Example object: `services`
 
 - A *service* is a stable endpoint to connect to "something"
 
@@ -44,7 +44,51 @@ There is already one service on our cluster: the Kubernetes API itself.
 
 ---
 
-## ClusterIP services
+## `describe` the `service`
+
+- Let's contrast `get` and `describe`
+
+- Both take an extra argument, the name of the object
+
+- `describe` without a name can be overwhelming, but it's there...
+
+.exercise[
+
+- Compare the output of both styles:
+  ```bash
+  kubectl get services kubernetes
+  kubectl describe service kubernetes
+  ```
+
+]
+
+- Try it with the following examples as you go.
+
+--
+
+*The exercise doesn't have misuse of plurality, it's there to demonstrate the plural aliases are not semantically significant (they don't mean anything)...*
+
+---
+
+## Tab completion
+
+- You can move faster with `kubectl` by using the tab key.
+
+.exercise[
+
+- Let `kubectl` type the name of the service for you:
+  ```bash
+  kubectl des`<tab>` ser`<tab>` `<tab>`
+  ```
+  
+- If the terminal beeps after hitting `<tab>`, hit it a second time to disambiguate options
+]
+
+- This is so convenient, you'll want to put your terminal in "silent alert" mode (flashes the screen instead of making a sound).
+
+---
+
+## Example object: ClusterIP services
 
 - A `ClusterIP` service is internal, available from the cluster only
 
@@ -69,7 +113,7 @@ The error that we see is expected: the Kubernetes API requires authentication.
 
 ---
 
-## Listing running containers
+## Example object: Listing running containers
 
 - Containers are manipulated through *pods*
 
@@ -94,7 +138,7 @@ The error that we see is expected: the Kubernetes API requires authentication.
 
 ---
 
-## Namespaces
+## Example object: Namespaces
 
 - Namespaces allow us to segregate resources
 
@@ -106,12 +150,14 @@ The error that we see is expected: the Kubernetes API requires authentication.
   kubectl get namespace
   kubectl get ns
   ```
+  
+  - Don't forget about the tab key to type the word `namespaces`
 
 ]
 
 --
 
-*You know what ... This `kube-system` thing looks suspicious.*
+*You know what... This `kube-system` thing looks familiar.*
 
 *In fact, I'm pretty sure it showed up earlier, when we did:*
 
@@ -143,19 +189,21 @@ The error that we see is expected: the Kubernetes API requires authentication.
 
 ---
 
-## What are all these control plane pods?
+## What are all these pods?
 
-- `etcd` is our etcd server
+Kubernetes has control logic, packaged as pods so it can be managed and monitored: 
 
-- `kube-apiserver` is the API server
+- `etcd` is the database that stores all configuration objects
 
-- `kube-controller-manager` and `kube-scheduler` are other control plane components
+- `kube-apiserver` is the API server we have been talking to the whole time
 
-- `coredns` provides DNS-based service discovery ([replacing kube-dns as of 1.11](https://kubernetes.io/blog/2018/07/10/coredns-ga-for-kubernetes-cluster-dns/))
+- We'll cover `kube-controller-manager` and `kube-scheduler` shortly
 
-- `kube-proxy` is the (per-node) component managing port mappings and such
+- `coredns` is an internal dynamic DNS server that is synchronized to current state 
 
-- `weave` is the (per-node) component managing the network overlay
+- `kube-proxy` sets up NAT mappings for container interfaces
+
+- `weave` is a pluggable component that manages networking between cluster nodes
 
 - the `READY` column indicates the number of containers in each pod
 

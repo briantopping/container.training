@@ -47,17 +47,21 @@
   ```bash
   kubectl get all
   ```
-
+- Note: Remember this only shows all resources in our current namespace. We don't see all resources in other namespaces without `--all-namespaces` / `-A`
+  ```bash
+  kubectl get all -A
+  ```
+  - `-A` adds a *NAMESPACE* column...
 ]
 
---
+---
+
+## Behind the scenes of `kubectl run` (cont.)
 
 We should see the following things:
 - `deployment.apps/pingpong` (the *deployment* that we just created)
 - `replicaset.apps/pingpong-xxxxxxxxxx` (a *replica set* created by the deployment)
 - `pod/pingpong-xxxxxxxxxx-yyyyy` (a *pod* created by the replica set)
-
-Note: as of 1.10.1, resource types are displayed in more detail.
 
 ---
 
@@ -79,8 +83,6 @@ Note: as of 1.10.1, resource types are displayed in more detail.
   - allows scaling
 
   - rarely used directly
-
-- A *replication controller* is the (deprecated) predecessor of a replica set
 
 ---
 
@@ -117,7 +119,7 @@ pod/pingpong-7c8bbcd9bc-6c9qz   1/1       Running   0          10m
 
 - Let's use the `kubectl logs` command
 
-- We will pass either a *pod name*, or a *type/name*
+- We can name either a *pod name*, or a *`type/name`*
 
   (E.g. if we specify a deployment or replica set, it will get the first pod in it)
 
@@ -183,6 +185,19 @@ pod/pingpong-7c8bbcd9bc-6c9qz   1/1       Running   0          10m
 Note: what if we tried to scale `replicaset.apps/pingpong-xxxxxxxxxx`?
 
 We could! But the *deployment* would notice it right away, and scale back to the initial level.
+
+---
+class: extra-details
+
+## Pods vs Containers
+
+- Briefly, Kubernetes Pods are a grouping of one or more Docker containers.
+
+- Our example pods all contain one container each. But they could have easily been combined in a single pod.
+
+- Think of pods as the smallest unit of scalability. If one database can be used for multiple database clients, the database and the clients shouldn't be in the same pod.
+
+- We'll see how pods provide local abstractions that are helpful in scaling applications to the massive levels Kubernetes is famous for.
 
 ---
 
@@ -272,6 +287,29 @@ We could! But the *deployment* would notice it right away, and scale back to the
 
   - all features are available
   - requires writing YAML
+
+---
+class: extra-details
+
+## Stay sane with GitOps!
+
+- In this class, we're focused on Kubernetes concepts and ad-hoc modifying our cluster.
+
+- In real life, directly applying objects to production clusters is not:
+  - Manageable between team members
+  - Traceable for triage
+  - Automatable
+
+--
+
+- Instead, use GitOps. ["By using Git as our source of truth, we can operate almost everything"](https://www.weave.works/blog/gitops-operations-by-pull-request)
+  - Commit YAML configurations (however generated)
+  - Pull requests are audited by other team members
+  - Apply changes to clusters using Git commit hooks
+
+--
+
+- **Result:** *Production clusters are guaranteed to be rebuildable.*
 
 ---
 
@@ -385,24 +423,6 @@ class: extra-details
 - There are external tools to address these shortcomings
 
   (e.g.: [Stern](https://github.com/wercker/stern))
-
----
-
-class: extra-details
-
-## `kubectl logs -l ... --tail N`
-
-- If we run this with Kubernetes 1.12, the last command shows multiple lines
-
-- This is a regression when `--tail` is used together with `-l`/`--selector`
-
-- It always shows the last 10 lines of output for each container
-
-  (instead of the number of lines specified on the command line)
-
-- The problem was fixed in Kubernetes 1.13
-
-*See [#70554](https://github.com/kubernetes/kubernetes/issues/70554) for details.*
 
 ---
 
