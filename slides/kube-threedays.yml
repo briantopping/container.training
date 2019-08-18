@@ -42,7 +42,7 @@ chapters:
   - shared/hastyconclusions.md
   - k8s/daemonset.md
   - k8s/namespaces.md
-- - k8s/rollout.md 
+- - k8s/rollout.md
   - k8s/healthchecks.md
   - k8s/healthchecks-more.md
 # DAY 2

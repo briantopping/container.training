@@ -50,7 +50,7 @@ TAG=$PREFIX-$SETTINGS
 
 #INFRA=infra/aws-us-west-1
 
-export AWS_INSTANCE_TYPE=t3a.medium
+export AWS_INSTANCE_TYPE=t3a.small
 
 SETTINGS=admin-test
 TAG=$PREFIX-$SETTINGS
