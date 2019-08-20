@@ -61,6 +61,6 @@ TAG=$PREFIX-$SETTINGS
 	--count $((4*$STUDENTS))
 
 ./workshopctl deploy $TAG
-./workshopctl kube $TAG 1.13.5
+./workshopctl kube $TAG 1.14.0
 ./workshopctl cards $TAG
 
