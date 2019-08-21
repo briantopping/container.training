@@ -1,3 +1,5 @@
+require 'newrelic_rpm'
+
 require 'digest'
 require 'sinatra'
 require 'socket'

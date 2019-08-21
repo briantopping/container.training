@@ -1,3 +1,6 @@
+import newrelic.agent
+newrelic.agent.initialize()
+
 from flask import Flask, Response
 import os
 import socket

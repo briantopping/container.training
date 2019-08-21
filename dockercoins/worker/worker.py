@@ -1,10 +1,11 @@
+import newrelic.agent
+newrelic.agent.initialize()
+
 import logging
 import os
 from redis import Redis
 import requests
 import time
-import newrelic.agent
-newrelic.agent.initialize()
 
 DEBUG = os.environ.get("DEBUG", "").lower().startswith("y")
 
