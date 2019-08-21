@@ -3,6 +3,8 @@ import os
 from redis import Redis
 import requests
 import time
+import newrelic.agent
+newrelic.agent.initialize()
 
 DEBUG = os.environ.get("DEBUG", "").lower().startswith("y")
 
@@ -17,11 +19,12 @@ else:
 redis = Redis("redis")
 
 
+@newrelic.agent.background_task()
 def get_random_bytes():
     r = requests.get("http://rng/32")
     return r.content
 
-
+@newrelic.agent.background_task()
 def hash_bytes(data):
     r = requests.post("http://hasher/",
                       data=data,
@@ -43,7 +46,7 @@ def work_loop(interval=1):
         work_once()
         loops_done += 1
 
-
+@newrelic.agent.background_task()
 def work_once():
     log.debug("Doing one unit of work")
     time.sleep(0.1)
