@@ -33,7 +33,7 @@ def hash_bytes(data):
     hex_hash = r.text
     return hex_hash
 
-
+@newrelic.agent.background_task()
 def work_loop(interval=1):
     deadline = 0
     loops_done = 0
@@ -50,10 +50,9 @@ def work_loop(interval=1):
 @newrelic.agent.background_task()
 def work_once():
     log.debug("Doing one unit of work")
-    time.sleep(0.1)
     random_bytes = get_random_bytes()
     hex_hash = hash_bytes(random_bytes)
-    if not hex_hash.startswith('0'):
+    if not hex_hash.startswith('00'):
         log.debug("No coin found")
         return
     log.info("Coin found: {}...".format(hex_hash[:8]))

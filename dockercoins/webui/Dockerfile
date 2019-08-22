@@ -1,6 +1,8 @@
 FROM node:4-slim
 RUN npm install express
 RUN npm install redis
+RUN npm install newrelic
+
 COPY files/ /files/
 COPY webui.js /
 CMD ["node", "webui.js"]
