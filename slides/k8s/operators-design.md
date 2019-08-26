@@ -177,35 +177,8 @@ class: extra-details
 ---
 
 ## Tools
-
-- CoreOS / RedHat Operator Framework
-
-  [GitHub](https://github.com/operator-framework)
-  |
-  [Blog](https://developers.redhat.com/blog/2018/12/18/introduction-to-the-kubernetes-operator-framework/)
-  |
-  [Intro talk](https://www.youtube.com/watch?v=8k_ayO1VRXE)
-  |
-  [Deep dive talk](https://www.youtube.com/watch?v=fu7ecA2rXmc)
-
-- Zalando Kubernetes Operator Pythonic Framework (KOPF)
-
-  [GitHub](https://github.com/zalando-incubator/kopf)
-  |
-  [Docs](https://kopf.readthedocs.io/)
-  |
-  [Step-by-step tutorial](https://kopf.readthedocs.io/en/stable/walkthrough/problem/)
-
-- Mesosphere Kubernetes Universal Declarative Operator (KUDO)
-
-  [GitHub](https://github.com/kudobuilder/kudo)
-  |
-  [Blog](https://mesosphere.com/blog/announcing-maestro-a-declarative-no-code-approach-to-kubernetes-day-2-operators/)
-  |
-  [Docs](https://kudo.dev/)
-  |
-  [Zookeeper example](https://github.com/kudobuilder/frameworks/tree/master/repo/stable/zookeeper)
-
+- KubeBuilder from the Kubernetes core team is considered the best framework to build operators with. Other frameworks exist (such as RedHat / CoreOS Operator SDK), but they are themselves migrating to KubeBuilder because it is maintained in lockstep with the API Server changes.
+ 
 ---
 
 ## Validation
@@ -284,6 +257,8 @@ class: extra-details
 - When creating a CRD, we need to specify a *list* of versions
 
 - Versions can be marked as `stored` and/or `served`
+
+- KubeBuilder facilitates this by providing build tools that generate the new versions along with the Protobuf RPC stubs.
 
 ---
 

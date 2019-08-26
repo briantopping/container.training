@@ -125,7 +125,7 @@ Examples:
 
 - This operator requires PersistentVolumes
 
-- We will install Rancher's [local path storage provisioner](https://github.com/rancher/local-path-provisioner) to automatically create these
+- We will install Rancher's [local path storage provisioner](https://github.com/rancher/local-path-provisioner) to automatically create these (built-in [Local Persistent Volumes](https://kubernetes.io/blog/2019/04/04/kubernetes-1.14-local-persistent-volumes-ga/) would also work, but we don't have a *provisioner* for them...)
 
 - Then, we will create an ElasticSearch resource
 

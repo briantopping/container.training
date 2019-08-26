@@ -19,28 +19,25 @@ Kubernetes also relies on underlying infrastructure:
 The control plane can run:
 
 - in containers, on the same nodes that run other application workloads
-
-  (example: Minikube; 1 node runs everything)
-
 - on a dedicated node
-
-  (example: a cluster installed with kubeadm)
-
 - on a dedicated set of nodes
+- outside of the cluster (example: most managed clusters like AKS, EKS, GKE)
 
-  (example: Kubernetes The Hard Way; kops)
+Any installation can be modified in place to mimic any other installation by moving component deployments and modifying clients.
 
-- outside of the cluster
+--
 
-  (example: most managed clusters like AKS, EKS, GKE)
+*It's a lot like when Linux first came out in the 1990's, there were initially a lot of distributions and then there were very few. Expect the same with Kubernetes...*
 
 ---
 
 class: pic
 
-![Kubernetes architecture diagram: control plane and nodes](images/k8s-arch2.png)
+![Kubernetes architecture diagram: control plane and nodes](images/k8s-arch4-thanks-luxas.png)
 
 ---
+
+class: self-paced
 
 ## What runs on a node
 
@@ -60,6 +57,8 @@ class: pic
 
 ---
 
+class: self-paced
+
 ## What's in the control plane
 
 - Everything is stored in etcd
@@ -78,7 +77,11 @@ class: pic
 
 ---
 
+class: self-paced
+
 ## Communication protocols: API server
+
+class: self-paced
 
 - The API server exposes a REST API
 
@@ -95,6 +98,8 @@ class: pic
   (between control plane components, and with kubelet)
 
 ---
+
+class: self-paced
 
 ## Communication protocols: on the nodes
 
@@ -116,7 +121,7 @@ The kubelet agent uses a number of special-purpose protocols and interfaces, inc
 
 ---
 
-class: pic
+class: pic, self-paced
 
 ![Kubernetes architecture diagram: communication between components](images/k8s-arch4-thanks-luxas.png)
 
@@ -132,9 +137,17 @@ https://github.com/kubernetes/community/blob/master/contributors/design-proposal
 
 ([Clayton Coleman](https://twitter.com/smarterclayton), Kubernetes Architect and Maintainer)
 
-What does that mean?
+--
+
+We've already flogged the content of this section, so I decided to skip these a few dozen slides for New Relic. 
+
+--
+
+***All of you are doing spectacularly with your understanding of the system!***
 
 ---
+
+class: self-paced
 
 ## The Kubernetes API is declarative
 
@@ -147,6 +160,8 @@ What does that mean?
 - *Controllers* will then wake up and create a pod matching the definition
 
 ---
+
+class: self-paced
 
 ## The core features of the Kubernetes API
 
@@ -166,6 +181,8 @@ What does that mean?
 
 ---
 
+class: self-paced
+
 ## Let's experiment a bit!
 
 - For the exercises in this section, connect to the first node of the `test` cluster
@@ -184,6 +201,8 @@ What does that mean?
 ]
 
 ---
+
+class: self-paced
 
 ## Create
 
@@ -207,6 +226,8 @@ This is equivalent to `kubectl create namespace hello`.
 
 ---
 
+class: self-paced
+
 ## Read
 
 - Let's retrieve the object we just created
@@ -227,6 +248,8 @@ Some data was automatically added to the object (like `spec.finalizers`).
 Some data is dynamic (typically, the content of `status`.)
 
 ---
+
+class: self-paced
 
 ## API requests and responses
 
@@ -250,6 +273,8 @@ Some data is dynamic (typically, the content of `status`.)
 
 ---
 
+class: self-paced
+
 class: extra-details
 
 ## API versions
@@ -262,17 +287,20 @@ class: extra-details
   - `rbac.authorization.k8s.io/v1`
   - `extensions/v1beta1`
 
-- It does not indicate which version of Kubernetes we're talking about
+- It does not indicate which overall version of Kubernetes we're talking about
 
-- It *indirectly* indicates the version of the `kind`
-
-  (which fields exist, their format, which ones are mandatory...)
+- It *specifically* indicates the version of the `kind` (which fields exist, their format, which ones are mandatory...)
 
 - A single resource type (`kind`) is rarely versioned alone
-
   (e.g.: the `batch` API group contains `jobs` and `cronjobs`)
 
+--
+
+***Together, this allows Kubernetes to evolve in a non-linear fashion between various capabilities.***
+
 ---
+
+class: self-paced
 
 ## Update
 
@@ -292,6 +320,8 @@ class: extra-details
   - submit the changes (with `PATCH` requests)
 
 ---
+
+class: self-paced
 
 ## Adding a label
 
@@ -317,6 +347,8 @@ We demonstrated *update* and *watch* semantics.
 
 ---
 
+class: self-paced
+
 ## What's special about *watch*?
 
 - The API server itself doesn't do anything: it's just a fancy object store
@@ -334,6 +366,8 @@ We demonstrated *update* and *watch* semantics.
   - when a Deployment object is updated, it can trigger a rolling update
 
 ---
+
+class: self-paced
 
 # Other control plane components
 

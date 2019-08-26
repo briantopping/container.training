@@ -97,21 +97,19 @@ Examples:
 
 ## Service catalog
 
-- *Service catalog* is another extension mechanism
+- [Service catalog](https://github.com/kubernetes-sigs/service-catalog) is another extension mechanism
 
 - It's not extending the Kubernetes API strictly speaking
-
   (but it still provides new features!)
 
-- It doesn't create new types; it uses:
-
+- It doesn't create new types; is configured by:
   - ClusterServiceBroker
   - ClusterServiceClass
   - ClusterServicePlan
   - ServiceInstance
   - ServiceBinding 
 
-- It uses the Open service broker API
+Once configured, "Service Catalog lets you provision cloud services directly from the comfort of native Kubernetes tooling. This project is in incubation to bring integration with service brokers to the Kubernetes ecosystem via the Open Service Broker API."
 
 ---
 

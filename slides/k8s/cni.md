@@ -529,6 +529,8 @@ done
 
 ---
 
+class: self-paced
+
 # Interconnecting clusters
 
 - We assigned different Cluster CIDRs to each cluster
@@ -543,6 +545,8 @@ done
 
 ---
 
+class: self-paced
+
 ## Disclaimers
 
 - There are many methods to interconnect clusters
@@ -554,6 +558,8 @@ done
 - We will often need to use tunnels or other network techniques
 
 ---
+
+class: self-paced
 
 ## The plan
 
@@ -575,6 +581,8 @@ done
 
 ---
 
+class: self-paced
+
 ## Starting the route reflector
 
 - Only do this slide if you are doing this on your own
@@ -584,6 +592,8 @@ done
 - Before continuing, make sure that you have the IP address of the route reflector
 
 ---
+
+class: self-paced
 
 ## Configuring kube-router
 
@@ -600,6 +610,8 @@ done
 .footnote[Note: with Calico, this is achieved by creating a BGPPeer CRD.]
 
 ---
+
+class: self-paced
 
 ## Updating kube-router configuration
 
@@ -624,6 +636,8 @@ done
 ]
 
 ---
+
+class: self-paced
 
 ## Restarting kube-router
 
@@ -650,6 +664,8 @@ For critical services, we might want to precisely control the update process.
 
 ---
 
+class: self-paced
+
 ## Checking peering status
 
 - We can see informative messages in the output of kube-router:
@@ -670,6 +686,8 @@ For critical services, we might want to precisely control the update process.
 - We should be able to ping the pods of other clusters!
 
 ---
+
+class: self-paced
 
 ## If we wanted to do more ...
 
